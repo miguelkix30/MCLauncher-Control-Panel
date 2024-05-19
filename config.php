@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </label>
                 <label for="maintenance_message">Mensaje de Mantenimiento:</label>
-                <input type="text" id="maintenance_message" name="maintenance_message" value="<?php echo $config["maintenance_message"]; ?>">
+                <textarea id="maintenance_message" name="maintenance_message" rows="4" cols="50"><?php echo $config["maintenance_message"]; ?></textarea>
                 <?php
                 $predefinedBackgrounds = [
                     'Por defecto' => 'none',

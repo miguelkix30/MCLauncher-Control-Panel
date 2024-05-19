@@ -173,7 +173,7 @@ nav a:hover {
     pointer-events: none;
   }
   
-  textarea#notification_content {
+  textarea#notification_content, textarea#maintenance_message {
     font-family: Arial, sans-serif;
     width: 100%;
     padding: 10px;
@@ -181,8 +181,9 @@ nav a:hover {
     border: 1px solid #ccc;
     box-sizing: border-box;
     resize: vertical;
-    min-height: 100px;
-  }
+    min-height: 130px;
+    margin-bottom: 20px;
+}
   
   #save_button {
     background-color: #4CAF50;
