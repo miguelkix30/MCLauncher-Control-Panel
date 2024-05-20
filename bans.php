@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="ceditor.php">Clientes</a>
         <a href="logout.php">Cerrar sesión</a>
     </nav><br><br>
+    <h1>Administrar bloqueos de HWID</h1>
     <div class="container" style="display: block;">
         <h2>Lista de HWID Baneadas</h2>
         <hr>

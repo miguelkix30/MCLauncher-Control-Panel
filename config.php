@@ -48,7 +48,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <title>MC Launcher Admin Panel</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="../favicon.png">
+    <style>
+        #manage-backgrounds-button {
+            background-color: transparent;
+            /* Fondo transparente */
+            border: none;
+            /* Sin borde */
+        }
+
+        #manage-backgrounds-button .fas {
+            color: white;
+            /* Icono de color blanco */
+            font-size: 24px;
+            /* Icono más grande */
+        }
+    </style>
 </head>
 
 <body>
@@ -59,6 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a href="logout.php">Cerrar sesión</a>
     </nav><br><br>
     <form method="post">
+        <h1>Configuración del Launcher</h1>
         <h2>General</h2>
         <div class="container">
             <div>
@@ -72,22 +89,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="maintenance_message">Mensaje de Mantenimiento:</label>
                 <textarea id="maintenance_message" name="maintenance_message" rows="4" cols="50"><?php echo $config["maintenance_message"]; ?></textarea>
                 <?php
-                $predefinedBackgrounds = [
-                    'Por defecto' => 'none',
-                    'Autumn' => 'http://node1.miguelkinetwork.fun:25565/launcher/media-launcher/autumn.mp4',
-                    'Permalanda' => 'http://node1.miguelkinetwork.fun:25565/launcher/media-launcher/permalanda.mp4',
-                    'Spring' => 'http://node1.miguelkinetwork.fun:25565/launcher/media-launcher/spring.mp4',
-                    'Summer' => 'http://node1.miguelkinetwork.fun:25565/launcher/media-launcher/summer.mp4',
-                    'Winter' => 'http://node1.miguelkinetwork.fun:25565/launcher/media-launcher/winter.mp4'
-                ];
-                $isCustomBackground = !in_array($config["custom_background"], $predefinedBackgrounds);
+                $baseURL = 'http://node1.miguelkinetwork.fun:25565/launcher/media-launcher/';
+                $predefinedBackgrounds = glob('../launcher/media-launcher/*.mp4');
+
+                $backgroundOptions = [];
+                foreach ($predefinedBackgrounds as $background) {
+                    $filename = pathinfo($background, PATHINFO_FILENAME);
+                    $backgroundOptions[$filename] = $baseURL . basename($background);
+                }
+
+                $isCustomBackground = !in_array($config["custom_background"], $backgroundOptions) && $config["custom_background"] != "none";
                 $customBackgroundValue = $isCustomBackground ? $config["custom_background"] : '';
                 ?>
 
                 <label for="custom_background">Fondo Personalizado:</label>
                 <select id="custom_background" name="custom_background" onchange="toggleCustomBackgroundInput(this)">
+                    <option value="none" <?php echo $config["custom_background"] == "none" ? 'selected' : ''; ?>>Por defecto</option>
                     <?php
-                    foreach ($predefinedBackgrounds as $name => $url) {
+                    foreach ($backgroundOptions as $name => $url) {
                         $selected = $config["custom_background"] == $url ? 'selected' : '';
                         echo "<option value=\"$url\" $selected>$name</option>";
                     }
@@ -95,6 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="custom" <?php echo $isCustomBackground ? 'selected' : ''; ?>>Otro (Enlace custom)</option>
                 </select>
                 <input type="text" id="custom_background_input" name="custom_background_input" style="<?php echo $isCustomBackground ? 'display: block;' : 'display: none;'; ?>" value="<?php echo $customBackgroundValue; ?>">
+                <button type="button" id="manage-backgrounds-button" onclick="location.href='beditor.php';"><i class="fas fa-pencil-alt"></i></button>
             </div>
             <div>
                 <?php
@@ -191,13 +211,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             customBackgroundInput.value = '';
         }
     }
+
     function toggleCustomOnlineInput(selectElement) {
-    var customOnlineInput = document.getElementById('online_input');
-    if (selectElement.value == 'custom') {
-        customOnlineInput.style.display = 'block';
-    } else {
-        customOnlineInput.style.display = 'none';
-        customOnlineInput.value = '';
+        var customOnlineInput = document.getElementById('online_input');
+        if (selectElement.value == 'custom') {
+            customOnlineInput.style.display = 'block';
+        } else {
+            customOnlineInput.style.display = 'none';
+            customOnlineInput.value = '';
+        }
     }
-}
 </script>
