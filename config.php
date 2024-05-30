@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div>
                 <?php
-                $isCustomOnline = !in_array($config["online"], ['true', 'false']);
+                $isCustomOnline = ($config["online"] !== 'true' && $config["online"] !== 'false');
                 $customOnlineValue = $isCustomOnline ? $config["online"] : '';
                 ?>
 
