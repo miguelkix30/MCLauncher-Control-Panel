@@ -38,6 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $config["notification"]["title"] = isset($_POST["notification_title"]) ? $_POST["notification_title"] : $config["notification"]["title"];
     $config["notification"]["content"] = isset($_POST["notification_content"]) ? $_POST["notification_content"] : $config["notification"]["content"];
     $config["modsBeta"] = isset($_POST["modsBeta"]) && $_POST["modsBeta"] == "1" ? true : false;
+    $config["discordVerification"] = isset($_POST["discordVerification"]) && $_POST["discordVerification"] == "1" ? true : false;
     // Guardar el archivo de configuración
     file_put_contents("../launcher/config-launcher/config.json", json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 }
@@ -118,14 +119,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div>
                 <?php
-                $isCustomOnline = ($config["online"] !== 'true' && $config["online"] !== 'false');
+                $isCustomOnline = !is_bool($config["online"]);
                 $customOnlineValue = $isCustomOnline ? $config["online"] : '';
                 ?>
 
                 <label for="online">Online:</label>
                 <select id="online" name="online" onchange="toggleCustomOnlineInput(this)">
-                    <option value="true" <?php echo $config["online"] === 'true' ? 'selected' : ''; ?>>True</option>
-                    <option value="false" <?php echo $config["online"] === 'false' ? 'selected' : ''; ?>>False</option>
+                    <option value="true" <?php echo $config["online"] === true ? 'selected' : ''; ?>>True</option>
+                    <option value="false" <?php echo $config["online"] === false ? 'selected' : ''; ?>>False</option>
                     <option value="custom" <?php echo $isCustomOnline ? 'selected' : ''; ?>>Otro (Enlace custom)</option>
                 </select>
                 <input type="text" id="online_input" name="online_input" style="<?php echo $isCustomOnline ? 'display: block;' : 'display: none;'; ?>" value="<?php echo $customOnlineValue; ?>">
@@ -183,6 +184,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <span>Mods Beta:</span>
                     <div class="switch">
                         <input type="checkbox" id="modsBeta" name="modsBeta" value="1" <?php echo $config["modsBeta"] ? 'checked' : ''; ?>>
+                        <span class="slider round"></span>
+                    </div>
+                </label>
+                <label>
+                    <span>Verificación de Discord:</span>
+                    <div class="switch">
+                        <input type="checkbox" id="discordVerification" name="discordVerification" value="1" <?php echo $config["discordVerification"] ? 'checked' : ''; ?>>
                         <span class="slider round"></span>
                     </div>
                 </label>
