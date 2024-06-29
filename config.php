@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $config["custom_background"] = $_POST["custom_background"];
     }
+    $config["loading_background"] = isset($_POST["loading_background"]) ? $_POST["loading_background"] : $config["loading_background"];
     $config["client_id"] = isset($_POST["client_id"]) ? $_POST["client_id"] : $config["client_id"];
     $config["dataDirectory"] = isset($_POST["dataDirectory"]) ? $_POST["dataDirectory"] : $config["dataDirectory"];
     $config["rss"] = isset($_POST["rss"]) ? $_POST["rss"] : $config["rss"];
@@ -134,6 +135,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="text" id="client_id" name="client_id" value="<?php echo $config["client_id"]; ?>">
                 <label for="dataDirectory">Directorio de Datos:</label>
                 <input type="text" id="dataDirectory" name="dataDirectory" value="<?php echo $config["dataDirectory"]; ?>">
+                <label for="loading_background">Textos de inicio:</label>
+            	<button type="button" id="manage-backgrounds-button" onclick="location.href='seditor.php';">Editar splashes</i></button>           
+            </div>
+            <div>
+                <?php
+                // Buscar los archivos de fondo de carga en el directorio especificado
+                $loadingBackgrounds = glob('../launcher/images-launcher/images/*.*');
+
+                $loadingBackgroundOptions = [];
+                foreach ($loadingBackgrounds as $background) {
+                    $filename = basename($background);
+                    $loadingBackgroundOptions[$filename] = $filename;
+                }
+                ?>
+
+                <label for="loading_background">Fondo de Carga:</label>
+                <select id="loading_background" name="loading_background">
+                    <?php
+                    foreach ($loadingBackgroundOptions as $filename) {
+                        $selected = $config["loading_background"] == $filename ? 'selected' : '';
+                        echo "<option value=\"$filename\" $selected>$filename</option>";
+                    }
+                    ?>
+                </select>
+                <button type="button" id="manage-images-button" onclick="location.href='ieditor.php';"><i class="fas fa-pencil-alt"></i></button>
             </div>
         </div>
         <h2>Notificaciones</h2>

@@ -51,6 +51,7 @@ $backgrounds = glob('../launcher/media-launcher/*.mp4');
         <a href="bans.php">Administrar bloqueos de HWID</a>
         <a href="ceditor.php">Clientes</a>
         <a href="logout.php">Cerrar sesión</a>
+    	<a href="../launcher/media-launcher/index.php" target="_blank">Media museum</a>
     </nav><br><br>
     <h1>Administrar fondos personalizados</h1>
 
@@ -78,6 +79,7 @@ $backgrounds = glob('../launcher/media-launcher/*.mp4');
 
         <h2>Subir un nuevo fondo</h2>
         <form action="beditor.php" method="post" enctype="multipart/form-data">
+            <label for="file">Selecciona un archivo para subir:</label>
             <input type="file" id="file" name="file" accept=".mp4"><br><br>
             <input type="submit" id="save_button" value="Subir" name="submit">
         </form>
